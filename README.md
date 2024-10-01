@@ -1,3 +1,6 @@
+# Future Plans
+I plan to modify this to be able to account for multiple days of yom tov and potentially enable multiple modes for different chagim as lighting scheudles may be different for סוכות vs. פסח vs. שבת.
+
 # Smartthings-Shabbos-Mode
 An automatic mode switcher for Shabbos and Yom Tov compatible with Smartthings Edge, self-hosted or in the cloud.
 
