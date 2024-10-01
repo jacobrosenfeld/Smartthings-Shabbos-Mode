@@ -3,7 +3,7 @@ from zmanim.hebrew_calendar.jewish_calendar import JewishCalendar
 from zmanim.zmanim_calendar import ZmanimCalendar
 from zmanim.util.geo_location import GeoLocation
 import pytz
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 import pysmartthings
 import aiohttp
@@ -11,17 +11,13 @@ import asyncio
 import os
 
 # Fill these out with your own info:
-lat = 40.7128
-long = -74.0060
+lat = 40.9131
+long = -74.0260
 elevation = 33
 # Any name will do here
-place = 'New York, NY'
+place = 'Teaneck, NJ'
 # This is your timezone
 zone = 'America/New_York'
-# This is the offset of time from Shkia for the program to run
-candle_lighting = -18
-# This is how long after shkia to wait for havdallah
-havdallah_time = 72
 # Set this to True if you're in Israel
 Il = False
 # This is your smartthings token
@@ -60,17 +56,19 @@ os.environ['TZ'] = zone
 if (not status(0)) & status(1):
     location = GeoLocation(place, lat, long, zone, elevation=elevation)
     zmanim = ZmanimCalendar(geo_location=location, date=date.gregorian_date)
-    shkia = zmanim.sunset() + timedelta(minutes=candle_lighting)
+    shkia = zmanim.sunset()
+    start = zmanim.mincha_ketana()
     timezone = pytz.timezone(zone)
     now = datetime.now(timezone)
-    time.sleep((shkia - now).total_seconds())
+    time.sleep((start - now).total_seconds())
     main('on')
 
 if status(0) & (not status(1)):
     location = GeoLocation(place, lat, long, zone, elevation=elevation)
     zmanim = ZmanimCalendar(geo_location=location, date=date.gregorian_date)
-    havdallah = zmanim.tzais_72() + timedelta(minutes=havdallah_time - 72)
+    havdallah = zmanim.tzais_72()
     timezone = pytz.timezone(zone)
     now = datetime.now(timezone)
     time.sleep((havdallah - now).total_seconds())
     main('off')
+
